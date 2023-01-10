@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware("auth");
+    }
+
+    public function index(): View
+    {
+        $projects = Project::with("user")->paginate(10);
+        return view("projects.index", compact("projects"));
     }
 
     /**
