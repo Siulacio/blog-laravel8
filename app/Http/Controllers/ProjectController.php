@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -19,69 +20,52 @@ class ProjectController extends Controller
         return view("projects.index", compact("projects"));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        $project = new Project();
+        $title = __("Crear proyecto");
+        $textButton = __("Crear");
+        $route = route("projects.store");
+        return view("projects.create", compact("title", "textButton", "route", "project"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $this->validate($request, [
+            "name" => "required|max:140|unique:projects",
+            "description" => "nullable|string|min:10"
+        ]);
+
+        Project::create($request->only("name", "description"));
+
+        return redirect(route("projects.index"))
+            ->with("success", __("¡Proyecto creado!"));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project)
+    public function edit(Project $project): View
     {
-        //
+        $update = true;
+        $title = __("Editar proyecto");
+        $textButton = __("Actualizar");
+        $route = route("projects.update", ["project" => $project]);
+        return view("projects.edit", compact("update","title", "textButton", "route", "project"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Project $project)
+    public function update(Request $request, Project $project): RedirectResponse
     {
-        //
+        $this->validate($request, [
+           "name" => "required|unique:projects,name," . $project->id,
+           "description" => "nullable|string|min:10"
+        ]);
+
+        $project->fill($request->only("name", "description"))->save();
+
+        return back()->with("success", __("¡Proyecto actualizado!"));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Project $project)
+    public function destroy(Project $project): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
-    {
-        //
+        $project->delete();
+        return back()->with("success", __("¡Proyecto eliminado!"));
     }
 }
