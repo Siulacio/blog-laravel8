@@ -26,7 +26,7 @@
                     <td class="border px-4 py-2">{{ $project->user->name }}</td>
                     <td class="border px-4 py-2">{{ date_format($project->created_at, "d/m/Y") }}</td>
                     <td class="border px-4 py-2">
-                        <a href="{{ route("projects.edit", ["project" => $project]) }}" class="text"></a>
+                        <a href="{{ route("projects.edit", ["project" => $project]) }}" class="text-blue-400">{{ __("Editar") }}</a>
                         <a
                             href="#"
                             class="text-red-400"
@@ -47,7 +47,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">
+                    <td colspan="4">
                         <div class="bg-red-100 text-center border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <p><strong class="font-bold">{{ __("No hay proyectos") }}</strong></p>
                             <span class="block sm:inline">{{ __("Todavía no hay nada que mostrar aqui") }}</span>
