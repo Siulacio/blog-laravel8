@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth");
-    }
-
     public function index(): View
     {
         $projects = Project::with("user")->paginate(10);
