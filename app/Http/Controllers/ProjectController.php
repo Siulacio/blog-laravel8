@@ -31,7 +31,9 @@ class ProjectController extends Controller
             "description" => "nullable|string|min:10"
         ]);
 
-        Project::create($request->only("name", "description"));
+        $request->merge(['user_id' => auth()->id()]);
+
+        Project::create($request->only('user_id', 'name', 'description'));
 
         return redirect(route("projects.index"))
             ->with("success", __("¡Proyecto creado!"));
