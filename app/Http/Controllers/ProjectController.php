@@ -6,16 +6,18 @@ use App\Actions\DeleteProjectAction;
 use App\Actions\UpsertProjectAction;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
+use App\ViewModels\GetProjectViewModel;
 use App\ViewModels\UpsertProjectViewModel;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class ProjectController extends Controller
 {
-    public function index(): View
+    public function index(GetProjectViewModel $viewModel): View
     {
-        $projects = Project::with('user')->paginate(10);
-        return view('projects.index', compact('projects'));
+        return view('projects.index', [
+            'projects' => $viewModel->projects(),
+        ]);
     }
 
     public function create(): View
