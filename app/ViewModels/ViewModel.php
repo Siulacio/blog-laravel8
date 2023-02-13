@@ -3,6 +3,7 @@
 namespace App\ViewModels;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Str;
 use ReflectionMethod;
 
 abstract class ViewModel implements Arrayable
