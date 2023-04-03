@@ -37,7 +37,7 @@ final class UpsertProjectViewModel extends ViewModel
         $title = __('Editar proyecto');
         $textButton = __('Actualizar');
         $route = route('projects.update', ['project' => $this->project]);
-        return compact('project', 'update','title', 'textButton', 'route');
+        return compact('project', 'update', 'title', 'textButton', 'route');
     }
 
 }
